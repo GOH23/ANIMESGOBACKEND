@@ -11,8 +11,12 @@ export const Activation = async (req, res) => {
             });
         }
         else{
-            user.isActivated = true;
-            user.save()
+            const userLog = await UserSchema.findOneAndUpdate({
+                activationLink: id
+            },{
+                $set: {isActivated: true}
+            });
+            
             return res.json({
                 message: 'Аккаунт активирован'
             })
