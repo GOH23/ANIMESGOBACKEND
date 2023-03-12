@@ -40,7 +40,7 @@ export const register = async (req, res) => {
             from: 'animesgodemo@gmail.com', // sender address
             to: req.body.email, // list of receivers
             subject: "ActivationLink ANIMESGO", // Subject line// plain text body
-            html: HTML_TEMPLATE(`http://localhost:4444/activate/${activationLink}`), // html body
+            html: HTML_TEMPLATE(`https://animesgo.onrender.com/activate/${activationLink}`), // html body
         });
         console.log(dataMess)
         const user = await doc.save();
