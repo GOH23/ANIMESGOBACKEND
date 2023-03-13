@@ -22,6 +22,7 @@ mongoose
 .connect('mongodb+srv://Demon:tTdN4nSo9PfuMhMY@cluster0.qbxzavw.mongodb.net/blog?retryWrites=true&w=majority')
 .then(()=>console.log("ok DB"))
 .catch((err)=> console.log(err));
+mongoose.set("strictQuery", false);
 const app = express();
 const storage =  multer.diskStorage({
     destination: (_,__,cb)=>{
