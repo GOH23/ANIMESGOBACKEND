@@ -13,6 +13,7 @@ import * as ActivationController from './controllers/ActivationController.js'
 import * as SettingsController from './controllers/SettingsController.js'
 import * as NewsController from './controllers/NewsController.js'
 import HandleError from './utils/HandleError.js';
+import fs from 'fs'
 import  cors  from 'cors';
 import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
@@ -26,6 +27,9 @@ mongoose.set("strictQuery", false);
 const app = express();
 const storage =  multer.diskStorage({
     destination: (_,__,cb)=>{
+        if(!fs.existsSync('uploads')){
+            fs.mkdirSync('uploads');
+        }
         cb(null,'uploads')
     },
     filename: (_,file,cb)=>{
