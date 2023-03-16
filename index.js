@@ -33,7 +33,8 @@ const storage =  multer.diskStorage({
         cb(null,'/tmp/uploads')
     },
     filename: (_,file,cb)=>{
-        cb(null,file.originalname+ '-' + Date.now())
+        var filename = file.fieldname + '-' + Date.now() + '-' + file.originalname;
+        cb(null,filename)
     },
 });
 const upload = multer({storage});
@@ -41,10 +42,10 @@ const upload = multer({storage});
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp/uploads',express.static('/tmp/uploads'))
+app.use('/tmp/uploads',express.static('tmp/uploads'))
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
-        url: `/tmp/uploads/${req.file.originalname}`,
+        url: `/tmp/uploads/${req.file.filename}`,
     })
 })
 app.post('/auth/login',loginValidation,HandleError,UserController.login);
