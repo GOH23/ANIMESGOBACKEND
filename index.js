@@ -25,20 +25,23 @@ mongoose
 .catch((err)=> console.log(err));
 mongoose.set("strictQuery", false);
 const app = express();
-const storage =  multer.diskStorage({
-    destination: (_,__,cb)=>{
-        cb(null,'tmp')
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './tmp')
     },
-    filename: (_,file,cb)=>{
-        cb(null,file.originalname)
-    },
-});
-const upload = multer({storage});
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+})
+
+var upload = multer({ storage: storage })
+
 
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp',express.static('tmp'))
+app.use(express.static(__dirname + '/tmp'));
+app.use('/tmp', express.static('tmp'));
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
         url: `/tmp/${req.file.originalname}`,
