@@ -45,7 +45,7 @@ export const BlockComment= async (req, res) => {
             $set: {
                 blocked: true
             }
-        }).populate('user','-passwordHash -email -role -optionsofanime -createdAt -updatedAt').exec()
+        }).populate('user','-passwordHash -email  -updatedAt').exec()
 
         res.json({
             mess: true
