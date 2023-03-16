@@ -25,7 +25,7 @@ export const GetCommentByAnimeId = async (req, res) => {
         const data = await ComentsSchema.find({
             AnimeId: id,
             blocked: false
-        }).populate('user','-passwordHash -email -role -optionsofanime -createdAt -updatedAt').exec()
+        }).populate('user','-passwordHash -email  -optionsofanime -isActivated -activationLink -updatedAt').exec()
 
         res.json(data)
     } catch (err) {
@@ -45,7 +45,7 @@ export const BlockComment= async (req, res) => {
             $set: {
                 blocked: true
             }
-        }).populate('user','-passwordHash -email -isActivated -activationLink  -updatedAt').exec()
+        }).populate('user','-passwordHash -email -role -optionsofanime -createdAt -activationLink -updatedAt').exec()
 
         res.json({
             mess: true
