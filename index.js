@@ -41,7 +41,7 @@ const upload = multer({storage});
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp/uploads',express.static('uploads'))
+app.use('/tmp/uploads',express.static('/tmp/uploads'))
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
         url: `/tmp/uploads/${req.file.originalname}`,
