@@ -27,10 +27,10 @@ mongoose.set("strictQuery", false);
 const app = express();
 const storage =  multer.diskStorage({
     destination: (_,__,cb)=>{
-        if(!fs.existsSync('uploads')){
-            fs.mkdirSync('uploads');
+        if(!fs.existsSync('/tmp/uploads')){
+            fs.mkdirSync('/tmp/uploads');
         }
-        cb(null,'uploads')
+        cb(null,'/tmp/uploads')
     },
     filename: (_,file,cb)=>{
         cb(null,file.originalname)
@@ -41,10 +41,10 @@ const upload = multer({storage});
 app.use(cors())
 
 app.use(express.json())
-app.use('/uploads',express.static('uploads'))
-app.post('/upload',checkAuth,upload.single('image'),(req,res)=>{
+app.use('/tmp/uploads',express.static('uploads'))
+app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
-        url: `/uploads/${req.file.originalname}`,
+        url: `/tmp/uploads/${req.file.originalname}`,
     })
 })
 app.post('/auth/login',loginValidation,HandleError,UserController.login);
