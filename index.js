@@ -14,6 +14,8 @@ import * as SettingsController from './controllers/SettingsController.js'
 import * as NewsController from './controllers/NewsController.js'
 import HandleError from './utils/HandleError.js';
 import fs from 'fs'
+import path from 'path';
+
 import  cors  from 'cors';
 import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
@@ -38,7 +40,7 @@ var upload = multer({ storage: storage })
 
 
 app.use(cors())
-
+const __dirname = path.resolve();
 app.use(express.json())
 app.use(express.static(__dirname + '/tmp'));
 app.use('/tmp', express.static('tmp'));
