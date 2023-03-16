@@ -4,6 +4,9 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    profileDesc: {
+        type: String
+    },
     email: {
         type: String,
         required: true,
@@ -19,6 +22,8 @@ const UserSchema = new mongoose.Schema({
         default: 'Пользователь'
     },
     isActivated: {type: Boolean,default: false},
+    isPrivacy: {type: Boolean,default: false},
+
     activationLink: {type: String},
     optionsofanime: [{
         status: {
