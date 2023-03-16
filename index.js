@@ -30,11 +30,10 @@ const storage =  multer.diskStorage({
         if(!fs.existsSync('/tmp/uploads')){
             fs.mkdirSync('/tmp/uploads');
         }
-        cb(null,'/tmp/uploads')
+        cb(null,'uploads')
     },
     filename: (_,file,cb)=>{
-        var filename = file.fieldname + '-' + Date.now() + '-' + file.originalname;
-        cb(null,filename)
+        cb(null,file.originalname)
     },
 });
 const upload = multer({storage});
@@ -42,10 +41,10 @@ const upload = multer({storage});
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp/uploads',express.static('/tmp/uploads'))
+app.use('/tmp',express.static('tmp'))
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
-        url: `/tmp/uploads/${req.file.filename}`,
+        url: `/tmp/${req.file.originalname}`,
     })
 })
 app.post('/auth/login',loginValidation,HandleError,UserController.login);
