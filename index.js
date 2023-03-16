@@ -46,7 +46,7 @@ app.use(express.static(__dirname + '/tmp'));
 app.use('/tmp', express.static('tmp'));
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
-        url: `/tmp/${req.file.originalname}`,
+        url: `/tmp/${req.file.filename}`,
     })
 })
 app.post('/auth/login',loginValidation,HandleError,UserController.login);
