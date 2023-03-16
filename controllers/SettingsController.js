@@ -5,7 +5,9 @@ export const SetSetting = async (req, res) => {
         const user = await UserSchema.findByIdAndUpdate({
             _id: id
         },{
-            avatarUrl: req.body.avatarUrl
+            avatarUrl: req.body.avatarUrl,
+            isPrivacy: req.body.isPrivacy,
+            profileDesc: req.body.descriptionProfile
         });
         if (!user) {
             return res.status(404).json({
