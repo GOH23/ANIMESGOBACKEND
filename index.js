@@ -14,8 +14,6 @@ import * as SettingsController from './controllers/SettingsController.js'
 import * as NewsController from './controllers/NewsController.js'
 import HandleError from './utils/HandleError.js';
 import fs from 'fs'
-import path from 'path';
-
 import  cors  from 'cors';
 import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
@@ -27,26 +25,26 @@ mongoose
 .catch((err)=> console.log(err));
 mongoose.set("strictQuery", false);
 const app = express();
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, '/tmp/uploads')
+const storage =  multer.diskStorage({
+    destination: (_,__,cb)=>{
+        if(!fs.existsSync('/tmp/uploads')){
+            fs.mkdirSync('/tmp/uploads');
+        }
+        cb(null,'uploads')
     },
-    filename: function (req, file, cb) {
-      cb(null, file.originalname)
-    }
-})
-
-var upload = multer({ storage: storage })
-
+    filename: (_,file,cb)=>{
+        cb(null,file.originalname)
+    },
+});
+const upload = multer({storage});
 
 app.use(cors())
-const __dirname = path.resolve();
+
 app.use(express.json())
-app.use(express.static(__dirname + '/tmp/uploads'));
-app.use('/tmp/uploads', express.static('tmp/uploads'));
+app.use('/tmp/uploads',express.static('uploads'))
 app.post('/tmp/upload',checkAuth,upload.single('image'),(req,res)=>{
     res.json({
-        url: `/tmp/uploads${req.file.filename}`,
+        url: `/tmp/uploads/${req.file.originalname}`,
     })
 })
 app.post('/auth/login',loginValidation,HandleError,UserController.login);
