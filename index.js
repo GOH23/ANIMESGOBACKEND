@@ -27,10 +27,7 @@ mongoose.set("strictQuery", false);
 const app = express();
 const storage =  multer.diskStorage({
     destination: (_,__,cb)=>{
-        if(!fs.existsSync('/tmp/uploads')){
-            fs.mkdirSync('/tmp/uploads');
-        }
-        cb(null,'uploads')
+        cb(null,'tmp')
     },
     filename: (_,file,cb)=>{
         cb(null,file.originalname)
