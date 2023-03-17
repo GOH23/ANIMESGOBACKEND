@@ -18,12 +18,18 @@ import cors from 'cors';
 import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
 import ActivateAcc from './utils/ActivateAcc.js';
+import cloudinary from 'cloudinary'
 import checkAdmin from './utils/checkAdmin.js';
 mongoose
     .connect('mongodb+srv://Demon:tTdN4nSo9PfuMhMY@cluster0.qbxzavw.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log("ok DB"))
     .catch((err) => console.log(err));
 mongoose.set("strictQuery", false);
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+})
 const app = express();
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
@@ -45,9 +51,8 @@ app.use(express.json())
 app.use('/tmp/uploads', express.static('/tmp/uploads'))
 app.post('/upload', checkAuth, (req, res) => {
     let upload = multer({ storage: storage }).single('image');
-    let filenames = fs.readdirSync('/tmp')
     console.log(filenames)
-    upload(req, res, function (err) {
+    upload(req, res, async function (err) {
         // req.file contains information of uploaded file 
         // req.body contains information of text fields, if there were any 
 
@@ -58,8 +63,9 @@ app.post('/upload', checkAuth, (req, res) => {
         else if (err) {
             return res.send(err);
         }
+        const result = await cloudinary.v2.uploader.upload(req.file.path)
         res.json({
-            url: `${req.file.path}`,
+            url: `${result.url}`,
         })
     })
 })
