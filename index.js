@@ -18,55 +18,48 @@ import cors from 'cors';
 import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
 import ActivateAcc from './utils/ActivateAcc.js';
-import cloudinary from 'cloudinary'
 import checkAdmin from './utils/checkAdmin.js';
+import cloudinary from 'cloudinary';
 mongoose
     .connect('mongodb+srv://Demon:tTdN4nSo9PfuMhMY@cluster0.qbxzavw.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log("ok DB"))
     .catch((err) => console.log(err));
 mongoose.set("strictQuery", false);
-cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+cloudinary.config({
+    cloud_name: "dar8xmlq3",
+    api_key: "287121962235664",
+    api_secret: "ASfVzv4DtQDb2bEkiMHIkYWGVQw"
+  });
 const app = express();
 const storage = multer.diskStorage({
     destination: (_, __, cb) => {
         if (!fs.existsSync('/tmp/uploads')) {
             fs.mkdirSync('/tmp/uploads');
         }
-        cb(null, '/tmp/uploads/')
+        cb(null, '/tmp/uploads')
     },
     filename: (_, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix)
     },
 });
-
+const upload = multer({ storage });
 
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp/uploads', express.static('/tmp/uploads'))
-app.post('/upload', checkAuth, (req, res) => {
-    let upload = multer({ storage: storage }).single('image');
-    upload(req, res, async function (err) {
-        // req.file contains information of uploaded file 
-        // req.body contains information of text fields, if there were any 
-
-
-        if (!req.file) {
-            return res.send('Please select an image to upload');
-        }
-        else if (err) {
-            return res.send(err);
-        }
-        const result = await cloudinary.v2.uploader.upload(req.file.path)
+app.use('/tmp/uploads', express.static('./tmp/uploads'))
+app.post('/tmp/upload', checkAuth, upload.single('image'), (req, res) => {
+    const result = cloudinary.v2.uploader.upload(req.file.path)
+    result.then((data) => {
+        console.log(data);
         res.json({
-            url: `${result.url}`,
+            url: `${data.secure_url}`,
         })
-    })
+      }).catch((err) => {
+        console.log(err);
+      });
+
 })
 app.post('/auth/login', loginValidation, HandleError, UserController.login);
 app.post('/auth/register', registerValidation, HandleError, UserController.register)
