@@ -66,6 +66,7 @@ app.post('/auth/register', registerValidation, HandleError, UserController.regis
 app.get('/activate/:id', ActivationController.Activation)
 app.get('/getactiv', checkAuth, ActivateAcc, ActivationController.GetActivation)
 app.get('/auth/me', checkAuth, UserController.GetMe)
+app.get('/profile/check/:id', checkAuth,ActivateAcc,  UserController.GetOtherUser)
 app.get('/auth/admin', checkAuth, checkAdmin, UserController.GetAdmin)
 app.get('/auth/moderator', checkAuth, checkAdminAndModerator, UserController.GetModerator)
 app.post('/animes', AnimeCreateValidation, AnimeController.create)
