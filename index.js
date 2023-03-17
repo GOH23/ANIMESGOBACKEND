@@ -20,7 +20,7 @@ import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
 import ActivateAcc from './utils/ActivateAcc.js';
 import checkAdmin from './utils/checkAdmin.js';
 
-const cloudinary = require('cloudinary').v2;
+import { v2 as cloudinary } from 'cloudinary'
 mongoose
     .connect('mongodb+srv://Demon:tTdN4nSo9PfuMhMY@cluster0.qbxzavw.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log("ok DB"))
@@ -51,8 +51,7 @@ app.use(cors())
 app.use(express.json())
 app.use('/tmp/uploads', express.static('./tmp/uploads'))
 app.post('/tmp/upload', checkAuth, upload.single('image'), (req, res) => {
-    const result = cloudinary.v2.uploader.upload(req.file.path)
-    result.then((data) => {
+    cloudinary.uploader.upload(req.file.path).then((data) => {
         console.log(data);
         res.json({
             url: `${data.secure_url}`,
