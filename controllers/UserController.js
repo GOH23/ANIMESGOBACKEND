@@ -89,6 +89,26 @@ export const GetMe = async (req, res) => {
         })
     }
 }
+export const GetOtherUser = async (req, res) => {
+    try {
+
+        const user = await UserSchema.find(req.params.id);
+        if (!user) {
+            return res.status(404).json({
+                message: 'Пользователь не найден'
+            });
+        }
+        const { passwordHash, ...UserData } = user._doc;
+        res.json(
+            { UserData }
+        );
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: 'Нет доступа'
+        })
+    }
+}
 export const GetAdmin = async (req, res) => {
     try {
 
