@@ -59,7 +59,7 @@ app.post('/upload', checkAuth, (req, res) => {
             return res.send(err);
         }
         res.json({
-            url: `/tmp/uploads/${req.file.path}`,
+            url: `${req.file.path}`,
         })
     })
 })
