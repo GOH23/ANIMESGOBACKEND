@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
     },
     isActivated: {type: Boolean,default: false},
     isPrivacy: {type: Boolean,default: false},
-    forCheckProfile: {type: mongoose.Types.ObjectId,auto: true,required: true},
+    forCheckProfile: {type: mongoose.Types.ObjectId,default: function () { return new mongoose.Types.ObjectId}},
     activationLink: {type: String},
     optionsofanime: [{
         status: {
