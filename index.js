@@ -30,22 +30,40 @@ const storage = multer.diskStorage({
         if (!fs.existsSync('/tmp/uploads')) {
             fs.mkdirSync('/tmp/uploads');
         }
-        cb(null, '/tmp/uploads')
+        cb(null, '/tmp/uploads/')
     },
     filename: (_, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, file.fieldname + '-' + uniqueSuffix)
     },
 });
-const upload = multer({ storage });
+
 
 app.use(cors())
 
 app.use(express.json())
-app.use('/tmp/uploads', express.static('./tmp/uploads'))
-app.post('/tmp/upload', checkAuth, upload.single('image'), (req, res) => {
-    res.json({
-        url: `/tmp/uploads/${req.file.filename}`,
+app.use('/tmp/uploads', express.static('/tmp/uploads'))
+app.post('/upload', checkAuth, (req, res) => {
+    let upload = multer({ storage: storage }).single('image');
+    let filenames = fs.readdirSync()
+    console.log(filenames)
+    upload(req, res, function (err) {
+        // req.file contains information of uploaded file 
+        // req.body contains information of text fields, if there were any 
+
+
+        if (!req.file) {
+            return res.send('Please select an image to upload');
+        }
+        else if (err instanceof multer.MulterError) {
+            return res.send(err);
+        }
+        else if (err) {
+            return res.send(err);
+        }
+        res.json({
+            url: `/tmp/uploads/${req.file.path}`,
+        })
     })
 })
 app.post('/auth/login', loginValidation, HandleError, UserController.login);
