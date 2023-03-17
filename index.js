@@ -51,7 +51,6 @@ app.use(express.json())
 app.use('/tmp/uploads', express.static('/tmp/uploads'))
 app.post('/upload', checkAuth, (req, res) => {
     let upload = multer({ storage: storage }).single('image');
-    console.log(filenames)
     upload(req, res, async function (err) {
         // req.file contains information of uploaded file 
         // req.body contains information of text fields, if there were any 
