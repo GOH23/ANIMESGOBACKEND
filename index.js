@@ -19,7 +19,8 @@ import multer from 'multer';
 import checkAdminAndModerator from './utils/checkAdminAndModerator.js';
 import ActivateAcc from './utils/ActivateAcc.js';
 import checkAdmin from './utils/checkAdmin.js';
-import cloudinary from 'cloudinary';
+
+const cloudinary = require('cloudinary').v2;
 mongoose
     .connect('mongodb+srv://Demon:tTdN4nSo9PfuMhMY@cluster0.qbxzavw.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log("ok DB"))
