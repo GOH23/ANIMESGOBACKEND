@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
         if (!fs.existsSync('/tmp/uploads')) {
             fs.mkdirSync('/tmp/uploads');
         }
-        cb(null, 'uploads')
+        cb(null, '/tmp/uploads')
     },
     filename: (_, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
