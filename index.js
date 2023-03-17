@@ -45,7 +45,7 @@ app.use(express.json())
 app.use('/tmp/uploads', express.static('/tmp/uploads'))
 app.post('/upload', checkAuth, (req, res) => {
     let upload = multer({ storage: storage }).single('image');
-    let filenames = fs.readdirSync()
+    let filenames = fs.readdirSync('/')
     console.log(filenames)
     upload(req, res, function (err) {
         // req.file contains information of uploaded file 
