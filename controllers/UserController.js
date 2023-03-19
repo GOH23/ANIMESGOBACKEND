@@ -94,7 +94,7 @@ export const GetOtherUser = async (req, res) => {
 
         const user = await UserSchema.find({
             forCheckProfile: req.params.id
-        }).select('fullName role avatarUrl optionsofanime createdAt isPrivacy profileDesc');
+        }).select('-_id fullName role avatarUrl optionsofanime createdAt isPrivacy profileDesc');
         if (!user) {
             return res.status(404).json({
                 message: 'Пользователь не найден'
