@@ -100,9 +100,9 @@ export const GetOtherUser = async (req, res) => {
                 message: 'Пользователь не найден'
             });
         }
-        const { passwordHash, ...UserData } = user._doc;
+
         res.json(
-            { UserData }
+            { user }
         );
     } catch (err) {
         console.log(err)
