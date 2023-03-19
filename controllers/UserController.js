@@ -100,6 +100,7 @@ export const GetOtherUser = async (req, res) => {
                 message: 'Пользователь не найден'
             });
         }
+        
         delete user[0].activationLink
         delete user[0].email
         delete user[0]._id
