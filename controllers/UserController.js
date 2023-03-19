@@ -92,7 +92,9 @@ export const GetMe = async (req, res) => {
 export const GetOtherUser = async (req, res) => {
     try {
 
-        const user = await UserSchema.find(req.params.id);
+        const user = await UserSchema.find({
+            forCheckProfile: req.params.id
+        });
         if (!user) {
             return res.status(404).json({
                 message: 'Пользователь не найден'
