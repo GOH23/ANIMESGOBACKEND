@@ -100,10 +100,17 @@ export const GetOtherUser = async (req, res) => {
                 message: 'Пользователь не найден'
             });
         }
+        if(user[0].isPrivacy){
+            const userDataIsPrivasy = await UserSchema.find({
+                forCheckProfile: req.params.id
+            }).select('-_id fullName avatarUrl createdAt profileDesc');
+        }
+        else{
+            res.json(
+                user[0]
+            );
+        }
 
-        res.json(
-            user[0]
-        );
     } catch (err) {
         console.log(err)
         res.status(500).json({
