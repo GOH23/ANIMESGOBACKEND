@@ -94,19 +94,15 @@ export const GetOtherUser = async (req, res) => {
 
         const user = await UserSchema.find({
             forCheckProfile: req.params.id
-        });
+        }).select('fullName role avatarUrl optionsofanime createdAt isPrivacy profileDesc');
         if (!user) {
             return res.status(404).json({
                 message: 'Пользователь не найден'
             });
         }
-        var UserData = user[0]
-        delete (UserData[activationLink])
-        delete (UserData[email])
-        delete (UserData[_id])
-        delete (UserData[passwordHash])
+
         res.json(
-            UserData
+            user[0]
         );
     } catch (err) {
         console.log(err)
