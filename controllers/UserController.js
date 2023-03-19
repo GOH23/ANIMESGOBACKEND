@@ -103,7 +103,7 @@ export const GetOtherUser = async (req, res) => {
         if(user[0].isPrivacy){
             const userDataIsPrivasy = await UserSchema.find({
                 forCheckProfile: req.params.id
-            }).select('-_id fullName avatarUrl createdAt profileDesc');
+            }).select('-_id fullName avatarUrl createdAt isPrivacy profileDesc');
             res.json(
                 userDataIsPrivasy[0]
             );
