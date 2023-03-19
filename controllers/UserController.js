@@ -100,13 +100,13 @@ export const GetOtherUser = async (req, res) => {
                 message: 'Пользователь не найден'
             });
         }
-
-        delete (user[0].activationLink)
-        delete (user[0].email)
-        delete (user[0]._id)
-        delete (user[0].passwordHash)
+        var UserData = user[0]
+        delete (UserData[activationLink])
+        delete (UserData[email])
+        delete (UserData[_id])
+        delete (UserData[passwordHash])
         res.json(
-            user[0] 
+            UserData
         );
     } catch (err) {
         console.log(err)
